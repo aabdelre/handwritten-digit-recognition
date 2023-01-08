@@ -45,7 +45,7 @@ def run_window(screen):
                 digit_ycor = sorted(digit_ycor)
 
                 min_x, max_x = max(digit_xcor[0] - BOUNDARY, 0), min(WIDTH, digit_xcor[-1] + BOUNDARY)
-                min_y, max_y = max(digit_ycor[0] - BOUNDARY, 0), min(digit_ycor[-1] + BOUNDARY, WIDTH) 
+                min_y, max_y = max(digit_ycor[0] - BOUNDARY, 0), min(digit_ycor[-1] + BOUNDARY, HEIGHT) 
 
                 digit_xcor = []
                 digit_ycor = []
@@ -63,11 +63,9 @@ def run_window(screen):
                     label = str(LABELS[np.argmax(MODEL.predict(image.reshape(1, 28, 28, 1)))])
                     
                     textDig = FONT.render(label, True, GREEN, WHITE)
-                    textRect = textDig.get_rect()
-                    
-                    textRect.left, textRect.bottom = min_x, max_y
-                    pygame.draw.rect(screen, GREEN, textRect)
-                    pygame.display.flip()
+                    textRect = pygame.Surface.get_rect(textDig)
+                    textRect.left, textRect.bottom = min_x, min_y
+                    pygame.draw.rect(screen, GREEN, pygame.Rect(min_x, min_y, max_x - min_x, max_y - min_y), 2)
                     screen.blit(textDig, textRect)
 
             if event.type == KEYDOWN:
